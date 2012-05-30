@@ -9,6 +9,7 @@ URL:        http://pypi.python.org/pypi/setuptools
 Source0:    http://pypi.python.org/packages/source/s/setuptools/setuptools-%{version}.tar.gz
 Source1:    psfl.txt
 Source2:    zpl.txt
+Source1001: packaging/python-setuptools.manifest 
 BuildRequires:  python-devel
 
 
@@ -42,6 +43,7 @@ requiring setuptools.
 %setup -q -n setuptools-%{version}
 
 %build
+cp %{SOURCE1001} .
 find -name '*.txt' | xargs chmod -x
 find -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python}|'
 CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
@@ -60,11 +62,13 @@ chmod +x $RPM_BUILD_ROOT%{python_sitelib}/setuptools/command/easy_install.py
 
 
 %files
+%manifest python-setuptools.manifest
 %{python_sitelib}/*
 %exclude %{python_sitelib}/easy_install*
 
 
 %files devel
+%manifest python-setuptools.manifest
 %{python_sitelib}/easy_install*
 %{_bindir}/*
 
